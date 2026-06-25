@@ -1,0 +1,66 @@
+/* 1. IMPORT FONTS FROM GOOGLE FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@400;600&family=Bebas+Neue&display=swap');
+
+/* 2. DEFINE YOUR THEME COLORS */
+:root {
+    --text-neon: #4BF1D3;
+    --bg-dark: #0000FF;
+    --accent-white: #FFFFFF;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-neon);
+    font-family: 'Anek Telugu', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    letter-spacing: 0px;
+}
+
+h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    letter-spacing: 0px;
+    text-transform: uppercase;
+    line-height: 0.9;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    word-spacing: 6px;
+}
+
+p, li {
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0px;
+    margin-bottom: 1.2rem;
+}
+
+button {
+    background-color: var(--text-neon); /* Uses your updated neon variable */
+    color: var(--accent-white);
+    border: none;
+    padding: 16px 32px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    word-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--accent-white);
+    color: var(--bg-dark);
+}
+
+/* 1. LOCKED / INACTIVE STATE */
+.milestone-item {
+    opacity: 0.4;
+    transition: opacity 0.4s ease;
+}
+
+/* 2. UNLOCKED / ACTIVE STATE */
+.milestone-item.unlocked {
+    opacity: 1.0;
+}
