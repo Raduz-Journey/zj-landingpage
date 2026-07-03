@@ -1,11 +1,20 @@
 /* 1. IMPORT FONTS FROM GOOGLE FONTS */
 @import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@400;600&family=Bebas+Neue&display=swap');
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* 2. DEFINE YOUR THEME COLORS */
 :root {
+    --header-text: #0000FF;
+    --header-bg-white: #FFFFFF;
     --text-neon: #4BF1D3;
     --bg-dark: #0000FF;
     --accent-white: #FFFFFF;
+    --border-color: #4BF1D3;
 }
 
 body {
@@ -16,51 +25,257 @@ body {
     padding: 0;
     box-sizing: border-box;
     letter-spacing: 0px;
+    overflow: hidden;
+    /* Grid system splits the page into 5 fractional blocks */
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 0.4fr 3.3fr 1.3fr;
+    /* row 1 (.top-bar)       = 1 part (20%)
+       row 2 (.hero-container) = 2.5 parts (50%)
+       row 3 (.landing-footer) = 1.5 parts (30%) */
 }
 
-h1 {
+/* ==========================================================================
+   2. TOP ANNOUNCEMENT BAR
+   ========================================================================== */
+
+.top-bar {
+    background-color: var(--header-bg-white);
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.top-bar h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 4rem;
-    letter-spacing: 0px;
-    text-transform: uppercase;
-    line-height: 0.9;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    word-spacing: 6px;
+    font-size: 50px;
+    letter-spacing: 2px;
+    color: var(--header-text);
 }
 
-p, li {
-    font-size: 1.1rem;
-    font-weight: 400;
-    line-height: 1.6;
-    letter-spacing: 0px;
-    margin-bottom: 1.2rem;
+/* ==========================================================================
+   3. SECTION 2: THE 3.8 HEIGHT ROW CONTAINER (FULL REPEATING BACKGROUND)
+   ========================================================================== */
+
+.hero-container {
+    display: flex;                 /* Places left and right columns side-by-side */
+    width: 100%;
+    height: 100%;                  /* Forces the container to fill the entire 3.8 vertical space */
+    align-items: center;           /* Vertically aligns text in the middle of the row */
+    position: relative;            /* Sets up coordinate space for the overlay tint */
+    z-index: 0;                    /* Places the background container at base layer 0 */
+
+    /* THE REPEATING TEXTURE LAYER */
+    background-image: url('../images/leather-background-journal.jpg');
+    background-size: auto;         /* Retains exact original image dimensions so it never pixelates */
+    background-repeat: repeat;     /* Duplicates the image infinitely on the X and Y axes to fill the 3.8 height space */
+    background-position: 0px 900px; /* Anchor tile point to line up rows perfectly */
+}
+
+/* THE JOURNAL IMAGE: Move it anywhere inside the left half of the screen */
+.journal-hero-img {
+    position: absolute;
+    width: 100%;
+    max-width: 461px; /* Or whatever size you chose in Inspect */
+    height: auto;           
+    object-fit: contain;    
+    z-index: 2;
+
+    /* 1. POSITION IT OVER YOUR GRID SPACE */
+    top: -5%;
+    left: 37%;
+
+    /* 2. ADD THE TABLE EFFECT */
+    transform: 
+        perspective(800px) /* Creates a 3D camera viewport view */
+        rotateX(0)     /* Tilts the top of the journal away from you, laying it down flat */
+        rotateY(0deg) 
+        rotateZ(0);   /* Spins it slightly sideways so it looks casually tossed on the table */
+
+    /* 3. SWITCH FROM A DROP-SHADOW TO A LAYERED CRISP FILTER */
+    filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.75));
+    
+    transition: transform 0.3s ease; /* Makes adjustments smooth if you tweak them */
+}
+
+/* Clear Dark Tint Layer over the entire repeating background */
+.hero-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    z-index: 1; /* Sits cleanly on top of the image (layer 1) but beneath text */
+}
+
+/* Left Column - Acts as a 50% wide transparent window frame */
+.journal-column {
+    flex: 1;                       /* Claims exactly 50% of the desktop width */
+    height: 100%;                  /* Extends all the way from the top to bottom of the 3.8 height box */
+    background: transparent;       /* Ensures no background colors block your texture */
+    /* 1. CREATES A COORDINATE BOX FOR THE IMAGE */
+    position: relative;
+}
+
+/* Right Column - Houses your text overlay layout */
+.content-column {
+    flex: 1;                       /* Claims the other 50% of the desktop width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    z-index: 2;                    /* Pushes text to layer 2, safely above the dark tint overlay */
+    background: transparent;       /* Keeps column transparent so background shows through */
+    position: relative;
+}
+
+/* ==========================================================================
+   FORCE POSITIONING AND SIZE ON THE HEADLINE TEXT
+   ========================================================================== */
+
+.content-column h2 {
+    font-family: 'Anek Telugu', sans-serif !important;
+
+    /* 1. TELLS THE BROWSER TO UNHOOK IT FROM THE STANDARD FLOW */
+    position: absolute !important;
+    
+    /* 2. CHOOSE THE TEXT SIZE (Always include 'px' or 'rem') */
+    font-size: 42px !important;    /* Increase this number to make it bigger */
+    line-height: 1.3 !important;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10 !important;        /* Keeps it layered safely on top of the background */
+    width: 85% !important;
+
+    /* 3. CO-ORDINATES (Change these values to move it around) */
+    top: 295% !important;           /* Lower percentage = Higher up on the screen */
+    left: 25% !important;           /* Lower percentage = Closer to the center split line */
+}
+
+.landing-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--bg-dark);
+    gap: 4px;
+    /* ADD THESE TO LOCK THE SIZE */
+    height: 100%;       /* Force it to stay strictly within its 1fr grid slice */
+    overflow: hidden;   /* Stops large text from physically stretching the footer container container */
+}
+
+/* Target the "Find out" headline specifically */
+.footer-heading {
+    font-family: 'Bebas Neue', sans-serif; /* Changes the font */
+    font-size: 40px;                     /* Controls the size */
+    letter-spacing: 1px;
+    color: var(--text-neon);
+    margin-bottom: 0px;
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Form Row Layout Container */
+.form-row {
+    display: flex;
+    flex-direction: column; /* Stacks input and button vertically on mobile, or controls their layout width */
+    align-items: center;    /* Keeps everything centered alignment-wise */
+    width: 100%;
+    max-width: 1200px;       /* Constrains the form container width */
+    gap: 8px;
 }
 
 button {
-    background-color: var(--text-neon); /* Uses your updated neon variable */
-    color: var(--accent-white);
+    background-color: var(--accent-white); /* Uses your updated neon variable */
+    color: var(--bg-dark);
     border: none;
     padding: 16px 32px;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.4rem;
     word-spacing: 2px;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 30px;
+    width: 200px;
+    max-width: 1200px ;
+    display: flex;
+    flex-direction: column;
+
+/* 1. MAKES THE BUTTON SLIGHTLY DARKER BY DEFAULT */
+    filter: brightness(0.94); /* Dims the neon background to 85% brightness */
+
+    transition: all 0.2s ease;
+
 }
 
 button:hover {
+
+    /* 2. LIGHTS UP TO FULL BRIGHTNESS ON HOVER */
+    filter: brightness(1); /* Restores the neon background to 100% full brightness */
     background-color: var(--accent-white);
     color: var(--bg-dark);
+    outline: 2px solid var(--border-color);
 }
 
-/* 1. LOCKED / INACTIVE STATE */
-.milestone-item {
-    opacity: 0.4;
-    transition: opacity 0.4s ease;
+input[type="email"] {
+    width: 900px;
+    padding: 16px;
+    font-size: 16px;
+    background-color: var(--accent-white);
+    color: var(--header-text);
+    
+    /* 1. MATCHES THE BUTTON CORNERS */
+    border: 2px solid rgba(255, 255, 255, 0.2); /* A subtle, muted border by default */
+    border-radius: 8px; /* Perfectly matches your button's rounded edges */
+    
+    margin-bottom: 15px;
+    font-family: inherit; /* Forces the text inside to use your 'Anek Telugu' font */
+    transition: all 0.2s ease;
+    align-items: center;
 }
 
-/* 2. UNLOCKED / ACTIVE STATE */
-.milestone-item.unlocked {
-    opacity: 1.0;
+/* 2. THE FOCUS STATE (WHEN THE USER CLICKS INSIDE TO TYPE) */
+input[type="email"]:focus {
+    outline: none; /* Removes the ugly default browser blue ring */
+    border-color: var(--text-neon); /* Smoothly lights up the border to match your neon accent color */
+    background-color: var(--header-bg-white); /* Gives the active box a very faint, premium tint */
+}
+
+/* ==========================================================================
+   7. RESPONSIVE DESIGN (MOBILE)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column;
+    }
+
+    .journal-column {
+        padding: 30px 20px 10px 20px;
+    }
+
+    .journal-hero-img {
+        max-width: 350px;
+    }
+
+    .content-column {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .content-column h2 {
+        font-size: 26px;
+        margin-bottom: 30px;
+    }
+
+    .waitlist-form {
+        margin: 0 auto;
+        width: 100%;
+    }
 }
