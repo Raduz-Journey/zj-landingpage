@@ -1,89 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You are in</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Refer a friend</title>
+  <link rel="stylesheet" href="./style-refferal.css">
 </head>
 
 <body>
-    
-    <h1>THANK YOU for ENTERING</h1>
 
-    <h1>Congrats You are in</h1>
-
-    <img src="" alt=""> <!--This is monkey writing on a leave image-->
-    <h3>Journaling is evolving</h3>
-
-    <img src="" alt=""> <!--Journal high quality image optional-->
-
-    <h2>DON'T FORGET ABOUT YOU FRIENDS</h2>
-    <h2>Sharing is caring</h2>
-    <p>Here you have your unique link to share with your friends</p>
-    <h2>URL</h2> <input type="text"> 
-    <p>Share your link via Whatsupp, Instagram, TikTok, email or Facebook to be the first and win free products</p>
-    <p>The more friends that join, the more stuff you win</p>
-
-    <li1>
-    <p>2 Friends joined</p>
-    <p>Basic digital journal max 2 options</p></li1>
-
-    <li2>
-    <p>10 Friends joined</p>
-    <p>Full digital system unlocked all 5 options available</p>
-    </li2>
-
-    <li3>
-    <p>15 Friends joined</p>
-    <p>50% OFF your physical premium journal</p>
-    </li3>
-
-    <li4>
-    <p>30 Friends joined</p>
-    <p>50% OFF on your physical journal + BONUS your 0name handwritten by me on the cover</p>
-    </li4>
-
-    <li5>
-    <p>50 Friends joined</p>
-    <p>FREE fully customized premium journal with handdrawn art by me on the cover + Your name handwritten by me on a T-shirt and your cover in you preffered style</p>
-    </li5>
-
-    
-
-    <h2>Friends joined</h2>
-
-    <!--The progress line-->
-
-    <h2>ZEPHRO products</h2>
-
-    <!--The products-->
+<!--The text and the image for the page-->
 
 
+<!--1-->
+  <div class="top-bar">
+    <h1>THANK YOU FOR ENTERING</h1>
+</div>
+
+<!--2-->
+  <div class="monkey-status-section">
+    <img src="./images" alt="Monkey holding a leaf" class="status-monkey-img">
+    <p class="evolution-tagline">Journaling is evolving</p>
+</div>
+
+<!--3-->
+  <div class="tribe-statement-box">
+    <p class="tribe-text">BUILD A TRIBE. MORE MINDS=POWER</p>
+</div>
+
+<!--4-->
+  <div class="allies-equipping-box">
+    <p class="allies-text">INVITE ALLIES & EQUIP YOUR LIFE</p>
+</div>
+
+<!--5-->
+  <div class="share-instructions-box">
+    <p class="share-text">Share your unique link via Whatsapp<br>Instagram, TikTok or Facebook<br>and earn ZEPHRO gifts for every friend who signs up</p>
+</div>
+
+<!--6-->
+  <div class="referral-link-container">
+    <div class="link-display-box">
+        <input type="text" id="unique-referral-url" value="https://zephrojournal.com/ref?id=1420" readonly>
+        <button type="button" id="copy-link-btn">Copy Link</button>
+    </div>
+</div>
 
 
+<!--This is the milestone tracking line-->
 
+<!--7-->
+<div class="milestone-timeline-container">
+    <!-- NEW: Top label for Friends Joined -->
+    <div class="timeline-label-top">Friends joined</div>
 
+    <!-- The master progress bar track -->
+    <div class="progress-track-bg">
+        <!-- The inner filled line showing progress -->
+        <div class="progress-track-fill" style="width: 10%;"></div>
+    </div>
 
+    <!-- The 5 Milestone Nodes -->
+    <div class="milestone-nodes-row">
+        
+        <!-- Milestone 1: 2 Friends -->
+        <div class="milestone-node">
+            <div class="milestone-circle">2</div>
+            <p class="milestone-reward">Build digital journal</p>
+        </div>
 
+        <!-- Milestone 2: 10 Friends -->
+        <div class="milestone-node">
+            <div class="milestone-circle">10</div>
+            <p class="milestone-reward">FREE Pen</p>
+        </div>
 
+        <!-- Milestone 3: 15 Friends -->
+        <div class="milestone-node">
+            <div class="milestone-circle">15</div>
+            <p class="milestone-reward">FREE Journal ZEPHRO pouch</p>
+        </div>
 
+        <!-- Milestone 4: 30 Friends -->
+        <div class="milestone-node">
+            <div class="milestone-circle">30</div>
+            <p class="milestone-reward">FREE Basic journal cover</p>
+        </div>
 
+        <!-- Milestone 5: 50 Friends -->
+        <div class="milestone-node">
+            <div class="milestone-circle">50</div>
+            <p class="milestone-reward">FREE Leather journal cover</p>
+        </div>
 
+    </div>
 
+    <!-- NEW: Bottom label for ZEPHRO gifts -->
+    <div class="timeline-label-bottom">ZEPHRO gifts</div>
+</div>
 
+<!-- Now comes the text that's updating as you move up in the line-->
 
-
-
-
-
-
-
-
-
-
-
+<!--8-->
+  <div class="status-feedback-box">
+    <!-- Added id="status-message" so we can dynamically update this text later -->
+    <p id="status-message" class="allies-status-text">You have no allies ... Yet!</p>
+    <p class="checking-status-text">Keep Checking</p>
+</div>
 
 
 </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

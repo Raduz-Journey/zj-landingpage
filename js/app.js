@@ -1,7 +1,6 @@
+// ===================== PASTE YOUR KEYS HERE
 // ==========================================================================
-// CONFIGURATION: PASTE YOUR KEYS HERE
-// ==========================================================================
-const SUPABASE_URL = "https://egngfclhfeeregttnnju.supabase.co/rest/v1/";
+const RAW_SUPABASE_URL = "https://egngfclhfeeregttnnju.supabase.co/rest/v1/";
 const SUPABASE_ANON_KEY = "sb_publishable_fyESfeL7jdVqA9RPdtrWXg_A9Xx1tYn";
 
 // Foolproof URL cleanup: strips trailing slashes AND extra /rest/v1 paths if copied by accident
@@ -11,16 +10,22 @@ const SUPABASE_URL = RAW_SUPABASE_URL.replace(/\/+$/, "").replace(/\/rest\/v1$/,
 const PAGE_LOAD_TIME = Date.now();
 
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector(".waitlist-form");
-    if (!form) return;
+    const formContainer = document.querySelector(".waitlist-form");
+    const submitButton = document.getElementById("submit-btn");
+    
+    if (!formContainer || !submitButton) return;
 
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Stop page from instantly redirecting
-
-        const emailInput = form.querySelector("input[type='email']");
-        const submitButton = form.querySelector("button[type='submit']");
+    // Listen directly to the button click rather than a form submission
+    submitButton.addEventListener("click", async () => {
+        const emailInput = formContainer.querySelector("input[type='email']");
         const email = emailInput.value.trim();
         
+        // Native browser validation doesn't block a div container, so we validate manually here:
+        if (!email) {
+            alert("Please enter an email address.");
+            return;
+        }
+
         // Visual feedback for the user
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = "Verifying...";
@@ -45,9 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const ipData = await ipResponse.json();
             const visitorIp = ipData.ip;
 
-            // 3. SECURELY CHECK FOR REPETITIVE IP FLOODING (5-Min Anti-Fraud rule)
-            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-            const checkIpUrl = `${SUPABASE_URL}/rest/v1/signups?ip_address=eq.${visitorIp}&created_at=gte.${fiveMinutesAgo}&select=id`;
+            // 3. SECURELY CHECK FOR REPETITIVE IP FLOODING (Max 2 Signups Forever rule)
+            const checkIpUrl = `${SUPABASE_URL}/rest/v1/signups?ip_address=eq.${visitorIp}&select=id`;
             
             const ipCheckRes = await fetch(checkIpUrl, {
                 method: "GET",
@@ -56,10 +60,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
                 }
             });
-            const existingEntries = await ipCheckRes.json();
             
-            if (existingEntries && existingEntries.length >= 3) {
-                throw new Error("Too many signups from this network. Please try again in 5 minutes.");
+            if (!ipCheckRes.ok) {
+                const errData = await ipCheckRes.json().catch(() => ({}));
+                throw new Error(`IP Check Failed (${ipCheckRes.status}): ${errData.message || 'Check table name'}`);
+            }
+            
+            const existingEntries = await ipCheckRes.json();
+            console.log("Total entries found for this IP:", existingEntries.length);
+
+            // Strict check: Convert it directly to a number to leave no room for errors
+            if (Number(existingEntries.length) >= 2) {
+                throw new Error(`Limit reached! You already have ${existingEntries.length} signups from this network.`);
             }
 
             // 4. FREE REAL-TIME CHECK FOR FAKE/DISPOSABLE EMAILS (No Key Required!)
@@ -72,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // 5. ALL CHECKS PASSED: SAVE DATA TO SUPABASE
-            const saveRes = await fetch(`${SUPABASE_URL}/rest/v1/signups`, {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/signups`, {
                 method: "POST",
                 headers: {
                     "apikey": SUPABASE_ANON_KEY,
@@ -81,20 +93,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Prefer": "return=minimal"
                 },
                 body: JSON.stringify({
-                    email: email,
-                    ip_address: visitorIp
+                    email: email, // Fixed: changed from userEmail to email
+                    ip_address: visitorIp // Fixed: matches your corrected Supabase column
                 })
             });
 
-            if (!saveRes.ok) {
-    const errData = await saveRes.json().catch(() => ({}));
-    throw new Error(`Supabase Error (${saveRes.status}): ${errData.message || 'Check RLS policies or column names'}`);
-}
+            // IF THE SYSTEM REJECTS IT (Errors or duplicates)
+            if (!response.ok) {
+                const errorText = await response.text();
+                
+                // Check if the database complains about your unique constraint rule
+                if (errorText.includes("unique_email") || errorText.includes("23505") || response.status === 409) {
+                    throw new Error("This email address has already signed up!");
+                }
+                
+                throw new Error(`Submission failed: ${errorText || response.statusText}`);
+            }
 
             // SUCCESS! Smoothly redirect them to your referral target page
-            window.location.href = form.getAttribute("action");
+            window.location.href = "pages/refferal.html";
 
         } catch (error) {
+            // Any validation error or duplicate error ends up right here safely
             alert(error.message);
             submitButton.textContent = originalButtonText;
             submitButton.disabled = false;

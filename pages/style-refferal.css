@@ -1,0 +1,453 @@
+/* 1. IMPORT FONTS FROM GOOGLE FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@400;600&family=Bebas+Neue&display=swap');
+
+/* ==========================================================================
+   MASTER LAYOUT GRID (FORCED TWO-COLUMN LAYOUT)
+   ========================================================================== */
+
+/* ==========================================================================
+   THE MASTER CANVAS
+   ========================================================================== */
+.page-wrapper {
+    position: relative !important;   /* Turns this container into a canvas coordinate space */
+    width: 100%;
+    min-height: 900px;              /* Gives you plenty of vertical room to drop elements */
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;               /* Prevents weird scrollbars if an element goes off-screen */
+}
+
+/* This is the master Grid that splits left and right side-by-side */
+.main-split-grid {
+    display: grid !important;
+    /* Force 2 equal columns on wide screens (monkey left, text right) */
+    grid-template-columns: 1fr 1.1fr !important; 
+    gap: 50px !important; /* Space between monkey and texts */
+    width: 100% !important;
+    align-items: center !important; /* Aligns them nicely vertically */
+    margin-bottom: 40px;
+}
+
+/* Right-hand column styling to make sure elements align left, not center */
+.right-text-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start !important; /* Aligns text left, like a document */
+    text-align: right !important;
+    width: 100%;
+}
+
+/* Make sure inner right-side text boxes align left as well */
+.tribe-statement-box, 
+.allies-equipping-box, 
+.share-instructions-box {
+    text-align: right !important;
+    margin: 12px 0 !important;
+}
+
+/* Only stack on actual small mobile phones (screens narrower than 850px) */
+@media (max-width: 850px) {
+    .main-split-grid {
+        grid-template-columns: 1fr !important; /* Stacks vertically on phone screens */
+        gap: 30px !important;
+    }
+    .right-text-column,
+    .tribe-statement-box, 
+    .allies-equipping-box, 
+    .share-instructions-box {
+        text-align: center !important; /* Centers back nicely for small screens */
+        align-items: center !important;
+    }
+}
+
+/* ==========================================================================
+   STEP 1: TOP HEADING BAR
+   ========================================================================== */
+.top-bar {
+    background-color: #ffffff !important;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    color: #0000FF !important;
+    font-size: clamp(2rem, 5vw, 3.5rem) !important;
+    margin: 0 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+}
+
+/* ==========================================================================
+   STEP 2: VISUAL MONKEY SECTION (LEFT SIDE)
+   ========================================================================== */
+.monkey-status-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    
+    /* ─── DYNAMIC RATIO CONTROLS ─── */
+    
+    /* Using percentage keeps a perfectly scaling gap from the center split */
+    margin-right: 5%;  /* Pushes monkey away from the text block by exactly 5% of its container */
+    margin-left: 2%;   /* Keeps a proportional breathing room on the outer left edge */
+    
+    /* Alternative: Use viewport units to anchor it precisely to the screen size */
+    /* margin-top: 2vw;  <- Scales the top distance completely dynamically with the screen size */
+
+}
+
+/* Styling for the monkey illustration */
+/* ==========================================================================
+   ELEMENT 1: THE MONKEY IMAGE
+   ========================================================================== */
+.status-monkey-img {
+    position: absolute !important;   /* Pulls it out of normal flow so you can drag it */
+    width: 35%;                      /* Scales down cleanly on smaller screens */
+    max-width: 320px;                /* Won't get too giant on desktop */
+    height: auto;
+    object-fit: contain;
+    z-index: 2;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 36%;                        /* Y-Axis: Move up or down (0% is top, 100% is bottom) */
+    left: 25%;                       /* X-Axis: Move left or right (0% is left, 100% is right) */
+    transform: translate(-50%, -50%) !important; /* Forces the anchor point to be the exact middle of the image */
+}
+
+/* Tagline directly under the monkey image */
+/* ==========================================================================
+   ELEMENT 2: THE EVOLUTION TAGLINE
+   ========================================================================== */
+.evolution-tagline {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    font-family: 'Bebas Neue', sans-serif !important;
+    color: #4BF1D3 !important;
+    font-size: clamp(1.4rem, 2.5vw, 2rem) !important;
+    white-space: nowrap;             /* Prevents the text from wrapping */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 57%;                        /* Y-Axis: Adjust to move it up or down */
+    left: 26%;                       /* X-Axis: Adjust to move it left or right */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the text */
+}
+
+/* ==========================================================================
+   ELEMENT 3: THE TRIBE STATEMENT
+   ========================================================================== */
+.tribe-statement-box {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 90%;                      /* Responsive bounding box width */
+    max-width: 600px;                /* Keeps it readable on large screens */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 20%;                        /* Y-Axis: Adjust to move it up or down */
+    left: 70%;                       /* X-Axis: Adjust to move it left or right */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the text */
+}
+
+/* Styling for "BUILD A TRIBE. MORE MINDS=POWER" */
+.tribe-text {
+    font-family: 'Bebas Neue', sans-serif !important;
+    color: #4BF1D3 !important;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem) !important; /* Scalable font size */
+    margin: 0 !important;
+    text-transform: uppercase !important; /* Ensures it stays in ALL CAPS */
+    letter-spacing: 1.5px !important;
+}
+
+/* ==========================================================================
+   ELEMENT 4: THE ALLIES STATEMENT
+   ========================================================================== */
+.allies-equipping-box {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 95%;                      /* Responsive bounding box width */
+    max-width: 750px;                /* Keeps it readable on large screens */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 30%;                        /* Y-Axis: Adjust to move it up or down */
+    left: 68%;                       /* X-Axis: Adjust to move it left or right */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the text */
+}
+
+/* Styling for "INVITE ALLIES & EQUIP YOUR LIFE" */
+.allies-text {
+    font-family: 'Bebas Neue', sans-serif !important;
+    color: #0000FF !important;
+    /* Scaled up from step 3 so it is intentionally larger */
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem) !important; 
+    margin: 0 !important;
+    text-transform: uppercase !important; /* Ensures it stays in ALL CAPS */
+    letter-spacing: 1.5px !important;
+    font-weight: bold !important;
+}
+
+/* ==========================================================================
+   STEP 5: SHARE INSTRUCTIONS (RIGHT SIDE)
+   ========================================================================== */
+/* ==========================================================================
+   ELEMENT 5: THE SHARE INSTRUCTIONS
+   ========================================================================== */
+.share-instructions-box {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 90%;                      /* Responsive bounding box width */
+    max-width: 420px;                /* Keeps it clean and readable */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 46%;                        /* Y-Axis: Adjust to move it up or down */
+    left: 73%;                       /* X-Axis: Adjust to move it left or right */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the box */
+}
+
+/* Hard override for the actual text paragraph inside it */
+.share-instructions-box .share-text {
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+/* Styling for "Share your unique link..." */
+.share-text {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important;
+    font-size: clamp(1rem, 2vw, 1.4rem) !important; /* Extremely readable on all screens */
+    margin: 0 !important;
+    line-height: 1.5 !important;
+}
+
+/* ==========================================================================
+   ELEMENT 6: THE REFERRAL LINK CONTAINER
+   ========================================================================== */
+.referral-link-container {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 90%;                      /* Responsive bounding box width */
+    max-width: 480px;                /* Keeps the copy box from stretching too wide */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 63%;                        /* Y-Axis: Adjust to move it up or down */
+    left: 73%;                       /* X-Axis: Adjust to move it left or right */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the box */
+}
+
+/* The actual box housing the link input and button */
+.link-display-box {
+    display: flex;
+    align-items: center;
+    background-color: #0000FF !important; /* Blue background */
+    border: 2px solid #4BF1D3 !important; /* Sleek teal border to match layout */
+    border-radius: 8px;
+    padding: 8px 12px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* The link text display input */
+#unique-referral-url {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #ffffff !important; /* White text */
+    background: transparent !important; /* No background on input, inherits container's blue */
+    border: none !important;
+    outline: none !important;
+    font-size: clamp(0.9rem, 1.8vw, 1.2rem) !important;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* Simple copy button to make the link box interactive */
+#copy-link-btn {
+    font-family: 'Anek Telugu', sans-serif !important;
+    background-color: #4BF1D3 !important; /* Teal button to contrast */
+    color: #0000FF !important; /* Blue text */
+    border: none !important;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-weight: bold !important;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+#copy-link-btn:hover {
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   ELEMENT 7: THE MILESTONE TRACKER
+   ========================================================================== */
+.milestone-timeline-container {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 90%;                      /* Spans widely across the bottom of the screen */
+    max-width: 1100px;               /* Caps it so it doesn't stretch infinitely on wide screens */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 80%;                        /* Y-Axis: Placed near the bottom. Adjust if you need more space! */
+    left: 50%;                       /* X-Axis: Centered across the whole page canvas */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the timeline */
+}
+
+/* The horizontal background track bar */
+.progress-track-bg {
+    position: absolute;
+    top: 25px; /* Aligns vertically with the middle of the circles */
+    left: -10%;
+    right: 10%;
+    height: 6px;
+    background-color: #c3fff4 !important; /* Dark grey uncompleted bar */
+    border-radius: 3px;
+    z-index: 1;
+}
+
+/* The filled portion of the track bar showing progress */
+.progress-track-fill {
+    height: 100%;
+    background-color: #4BF1D3 !important; /* Neon teal indicating completed path */
+    border-radius: 3px;
+    width: 10%; /* Adjusted dynamically by JS later */
+    transition: width 0.5s ease-in-out;
+}
+
+/* Row layout holding the nodes (circles & text) spaced evenly */
+.milestone-nodes-row {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2; /* Sits on top of the background bar line */
+    width: 100%;
+}
+
+/* Individual node wrapper */
+.milestone-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 18%; /* Prevents overlap */
+    text-align: center;
+}
+
+/* The milestone target circle */
+.milestone-circle {
+    font-family: 'Anek Telugu', sans-serif !important;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4d4da8 !important; /* Default unachieved state */
+    color: #ffffff !important;
+    border: 3px solid #0000FF !important; /* Blue ring */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold !important;
+    font-size: 1.2rem !important;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Active achieved milestone circle state (to be toggled by JS later) */
+.milestone-circle.achieved {
+    background-color: #0000FF !important; /* Changes to neon teal when reached */
+    color: #ffffff !important; /* Text changes to contrasting blue */
+    border-color: #4BF1D3 !important; /* White ring when achieved */
+    box-shadow: 0 0 10px rgba(75, 241, 211, 0.6);
+}
+
+/* The reward description text below each circle */
+.milestone-reward {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important; /* White text */
+    font-size: clamp(0.75rem, 1.5vw, 0.95rem) !important;
+    margin-top: 50px !important;
+    line-height: 1.3 !important;
+    font-weight: 500 !important;
+}
+
+/* Styling for the label above the progress track at the start */
+.timeline-label-top {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;             /* Prevents text from wrapping */
+    
+    /* POSITIONING CONTROLS */
+    position: absolute !important;
+
+    /* ─── 1. MOVE UP OR DOWN (Vertical) ─── */
+    top: 20px !important;           /* Negative number pushes it HIGHER. Less negative (like -20px) pulls it LOWER. */
+
+    /* ─── 2. MOVE LEFT OR RIGHT (Horizontal) ─── */
+    left: -25% !important;             /* Change this % or px value to slide it left or right */
+}
+
+/* Styling for the label below the milestone row at the start */
+.timeline-label-bottom {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;             /* Prevents text from wrapping */
+
+    /* POSITIONING CONTROLS */
+    position: absolute !important;   /* Changed to absolute so you can coordinate move it */
+
+    /* ─── 1. MOVE UP OR DOWN (Vertical) ─── */
+    bottom: 14.8px !important;        /* Negative number pushes it LOWER. Less negative (like -20px) pulls it HIGHER. */
+
+    /* ─── 2. MOVE LEFT OR RIGHT (Horizontal) ─── */
+    left: -24.9% !important;             /* Change this % or px value to slide it left or right */
+}
+
+/* ==========================================================================
+   ELEMENT 8: STATUS FEEDBACK BOX
+   ========================================================================== */
+.status-feedback-box {
+    position: absolute !important;   /* Pulls it out of normal flow */
+    width: 90%;                      /* Responsive bounding box width */
+    max-width: 500px;                /* Keeps it centered and tidy */
+    z-index: 3;
+
+    /* ─── DRAG & DROP COORDINATES ─── */
+    top: 94%;                       /* Y-Axis: Placed below the timeline. Adjust if you need it higher/lower! */
+    left: 50%;                       /* X-Axis: Centered horizontally on the page */
+    transform: translate(-50%, -50%) !important; /* Locks anchor to the center of the box */
+}
+
+/* Force both sub-texts to stay centered */
+.status-feedback-box .allies-status-text,
+.status-feedback-box .checking-status-text {
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* Dynamic main status text style ("You have no allies ... Yet!") */
+.allies-status-text {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important; /* Clean white text */
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem) !important;
+    font-weight: 600 !important;
+    margin: 0 0 8px 0 !important;
+}
+
+/* Secondary reminder text style ("Keep Checking") */
+.checking-status-text {
+    font-family: 'Anek Telugu', sans-serif !important;
+    color: #4BF1D3 !important; /* Neon teal color */
+    font-size: clamp(1rem, 2vw, 1.3rem) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 !important;
+    font-weight: bold !important;
+}

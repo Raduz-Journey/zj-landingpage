@@ -74,30 +74,30 @@ body {
     background-position: 0px 900px; /* Anchor tile point to line up rows perfectly */
 }
 
-/* THE JOURNAL IMAGE: Move it anywhere inside the left half of the screen */
+/* THE JOURNAL IMAGE: Perfectly centered and scales dynamically */
 .journal-hero-img {
     position: absolute;
-    width: 100%;
-    max-width: 461px; /* Or whatever size you chose in Inspect */
+    width: 85%;             /* Scales down smoothly as the window shrinks */
+    max-width: 461px;       /* Hard ceiling: won't grow larger than this on big screens */
     height: auto;           
     object-fit: contain;    
     z-index: 2;
 
-    /* 1. POSITION IT OVER YOUR GRID SPACE */
-    top: -5%;
-    left: 37%;
+    /* 1. PIN THE ANCHOR TO THE EXACT MIDDLE OF THE LEFT COLUMN */
+    top: 40%;               /* Adjust this percentage to move it up or down on the Y-Axis! */
+    left: 50%;              /* Keeps it locked horizontally in the middle of its half */
 
-    /* 2. ADD THE TABLE EFFECT */
+    /* 2. PERFECT CENTERING + YOUR 3D EFFECT */
     transform: 
-        perspective(800px) /* Creates a 3D camera viewport view */
-        rotateX(0)     /* Tilts the top of the journal away from you, laying it down flat */
+        translate(-50%, -50%)  /* This pulls the image back so its exact center aligns with the 50%/50% pin */
+        perspective(800px) 
+        rotateX(0)     
         rotateY(0deg) 
-        rotateZ(0);   /* Spins it slightly sideways so it looks casually tossed on the table */
+        rotateZ(0);   
 
-    /* 3. SWITCH FROM A DROP-SHADOW TO A LAYERED CRISP FILTER */
+    /* 3. SHADOW & TRANSITION */
     filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.75));
-    
-    transition: transform 0.3s ease; /* Makes adjustments smooth if you tweak them */
+    transition: transform 0.3s ease; 
 }
 
 /* Clear Dark Tint Layer over the entire repeating background */
@@ -130,30 +130,37 @@ body {
     padding: 40px;
     z-index: 2;                    /* Pushes text to layer 2, safely above the dark tint overlay */
     background: transparent;       /* Keeps column transparent so background shows through */
-    position: relative;
+    position: relative !important; 
 }
 
 /* ==========================================================================
-   FORCE POSITIONING AND SIZE ON THE HEADLINE TEXT
+   RIGHT COLUMN HEADLINE TEXT - LOCKED & CENTERED
    ========================================================================== */
-
 .content-column h2 {
+    /* 1. KEEPS YOUR FONT LOADED CORRECTLY */
     font-family: 'Anek Telugu', sans-serif !important;
-
-    /* 1. TELLS THE BROWSER TO UNHOOK IT FROM THE STANDARD FLOW */
-    position: absolute !important;
-    
-    /* 2. CHOOSE THE TEXT SIZE (Always include 'px' or 'rem') */
-    font-size: 42px !important;    /* Increase this number to make it bigger */
-    line-height: 1.3 !important;
+    position: absolute !important; /* On its own layer so it never pushes the footer */
     font-weight: 600;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    z-index: 10 !important;        /* Keeps it layered safely on top of the background */
-    width: 85% !important;
+    z-index: 10 !important;        
+    
+    /* 2. RESPONSIVE BOUNDARIES (Wider text layout that scales elegantly) */
+    width: 90% !important;
+    white-space: nowrap; /* Prevents words from shifting layout positions or wrapping */
+    
+    /* Scales down like a vector image when you split the screen */
+    font-size: clamp(1.4rem, 3vw, 1.6rem) !important; 
+    line-height: 1.4 !important;
 
-    /* 3. CO-ORDINATES (Change these values to move it around) */
-    top: 295% !important;           /* Lower percentage = Higher up on the screen */
-    left: 25% !important;           /* Lower percentage = Closer to the center split line */
+    /* 3. PIN THE TEXT TO THE MATHEMATICAL CENTER OF THE RIGHT COLUMN */
+    top: 370%;              /* Adjust this percentage to move it up or down the page! */
+    left: 50%;             /* Locks it horizontally perfectly in the middle of its half */
+    
+    /* 4. PERFECT CENTER ENGINE SHIFT */
+    transform: translate(-50%, -50%) !important; /* Pulls the text block exactly onto its coordinate axis center */
+
+    text-align: center !important;
+    margin: 0 !important;
 }
 
 .landing-footer {
@@ -248,34 +255,202 @@ input[type="email"]:focus {
 }
 
 /* ==========================================================================
+   7. RESPONSIVE DESIGN (MOBILE) - FIXED
+   ========================================================================== */
+
+/* ==========================================================================
    7. RESPONSIVE DESIGN (MOBILE)
    ========================================================================== */
 
 @media (max-width: 768px) {
-    .hero-container {
-        flex-direction: column;
+    
+    /* 1. THE TOP BAR CONTAINER (HARD RESET) */
+    .top-bar {
+        /* Strip desktop positioning traps */
+        position: relative !important;    
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        
+        /* Layout */
+        width: 100% !important;
+        height: auto !important;          
+        padding: 15px 0 !important;       
+        text-align: center !important;
+        box-sizing: border-box !important;
+        display: block !important;        
+        
+        /* Force visibility */
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
-    .journal-column {
-        padding: 30px 20px 10px 20px;
+    /* 2. THE MAIN TITLE TEXT (HARD RESET) */
+    .top-bar h1 {
+        /* Strip desktop positioning traps */
+        position: relative !important;    
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+
+        /* Styling & Visibility */
+        color: #0000FF !important;        /* Forces that signature bright blue */
+        font-size: 26px !important;       /* <-- Shrunk to 18px so it's much smaller */
+        line-height: 1.2 !important;      
+        margin: 0 !important;             
+        padding: 0 15px !important;       
+        text-align: center !important;
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        
+        /* Force visibility */
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
-    .journal-hero-img {
-        max-width: 350px;
-    }
-
+    /* ==========================================================================
+       ELEMENT 3: THE CONTENT COLUMN (Respecting your dignity...)
+       ========================================================================== */
     .content-column {
-        padding: 20px;
-        text-align: center;
+        /* 1. Reset any desktop positioning traps */
+        position: relative !important;
+        top: 40% !important;
+        left: auto !important;
+        transform: none !important;
+        
+        /* 2. Layout & Spacing */
+        width: 100% !important;
+        height: auto !important;            /* Lets the container grow naturally with the text */
+        margin-top: 10% !important;        /* Creates a clean gap below the journal image */
+        margin-bottom: 7% !important;     /* Creates a clean gap above the footer elements */
+        padding: 0 20px !important;         /* Keeps text safely away from the phone screen edges */
+        box-sizing: border-box !important;
+        text-align: center !important;
     }
 
     .content-column h2 {
-        font-size: 26px;
-        margin-bottom: 30px;
+        /* 1. Typography */
+        font-size: 20px !important;         /* Sleek, highly readable mobile size */
+        line-height: 1.4 !important;        /* Gives the line break (<br>) plenty of breathing room */
+        font-weight: 600 !important;
+        
+        /* 2. Coloring & Spacing */
+        color: #4bf1d3 !important;          /* Keeps that beautiful signature cyan color */
+        margin: 0 !important;               /* Strips default browser margins */
+        display: block !important;
+        width: 100% !important;
     }
 
-    .waitlist-form {
-        margin: 0 auto;
-        width: 100%;
+/* ==========================================================================
+       ELEMENT 4: THE LANDING FOOTER (Tuned for visibility & tight spacing)
+       ========================================================================== */
+    .landing-footer {
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        
+        width: 100% !important;
+        height: auto !important;
+        min-height: 260px;               
+        /* Reduced top padding from 35px to 10px to pull FIND OUT upward */
+        padding: 15px 20px 15px 20px !important; 
+        box-sizing: border-box !important;
+        
+        display: flex !important;
+        flex-direction: column !important;     
+        justify-content: flex-start !important;
+        align-items: center !important;
     }
+
+    /* Reset form wrapper margins to prevent invisible gaps */
+    .waitlist-form {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+    }
+
+    .form-row {
+        display: flex !important;
+        flex-direction: column !important;     
+        align-items: center !important;
+        width: 100% !important;
+        gap: 10px !important;  
+        margin-top: 0 !important;                /* Tightened gap between input and button */
+    }
+
+    /* The "Find out" Heading */
+    .footer-heading {
+        font-size: 30px !important;            
+        margin: 0 0 5px 0 !important;          /* Zero top margin pulls it closer to the boundary */
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    /* The Email Input Field */
+    .landing-footer input[type="email"] {
+        width: 100% !important;
+        max-width: 200% !important;           
+        height: 42px !important;               /* Sliced a tiny bit of height to save space */
+        padding: 0 15px !important;
+        font-size: 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* The "The magic place" Button */
+    .landing-footer button {
+        width: 100% !important;
+        max-width: 200px !important;           
+        height: 40px !important;               /* Sliced a tiny bit of height to save space */
+        font-size: 20px !important;/* 1. Control the text size (change 14px to whatever size you want) */
+
+        /* 2. Force perfect horizontal and vertical centering */
+        display: flex !important;
+        justify-content: center !important; /* Centers horizontally */
+        align-items: center !important;     /* Centers vertically */
+
+        /* 3. Reset any desktop styling that might push the text off-center */
+        line-height: 1 !important;
+        padding: 0 !important;
+        text-align: center !important;
+    }
+
+    /* Copyright Text (Pulled up and highly visible) */
+    .copyrights {
+        position: relative !important;
+        display: block !important;
+        font-size: 11px !important;
+        color: #4BF1D3 !important;             /* Crisp white so it stands out clearly */
+        text-align: center !important;
+        width: 100% !important;
+        margin-top: 15px !important;           /* Pulled closer to the button (from 30px down to 15px) */
+        opacity: 0.8 !important;               
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
